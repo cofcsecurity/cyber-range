@@ -41,54 +41,132 @@ resource "aws_network_acl" "blue_subnet_acl" {
   }
 }
 
-resource "aws_network_interface" "bluehost_nic" {
+resource "aws_network_interface" "blue_one_nic" {
   subnet_id       = aws_subnet.blue_subnet.id
-  private_ips     = ["10.0.10.20"]
+  private_ips     = ["10.0.10.10"]
   security_groups = [aws_security_group.range_default_sg.id]
 
   tags = {
-    Name = "range_bluehost"
+    Name = "range_blue_one"
   }
 }
 
-resource "aws_instance" "bluehost" {
+resource "aws_instance" "blue_one" {
   ami               = data.aws_ami.ubuntu.id
   instance_type     = "t2.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
   network_interface {
-    network_interface_id = aws_network_interface.bluehost_nic.id
+    network_interface_id = aws_network_interface.blue_one_nic.id
     device_index         = 0
   }
 
   tags = {
-    "Name" = "Blue Workstation"
+    "Name" = "Blue One"
   }
 }
 
-resource "aws_network_interface" "blue_mongo_nic" {
+resource "aws_network_interface" "blue_two_nic" {
   subnet_id       = aws_subnet.blue_subnet.id
-  private_ips     = ["10.0.10.10"]
+  private_ips     = ["10.0.10.20"]
   security_groups = [aws_security_group.range_default_sg.id]
 
   tags = {
-    Name = "range_blue_mongo"
+    Name = "range_blue_two"
   }
 }
 
-resource "aws_instance" "blue_mongo" {
-  ami               = data.aws_ami.mongo.id
+resource "aws_instance" "blue_two" {
+  ami               = data.aws_ami.ubuntu.id
   instance_type     = "t2.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
   network_interface {
-    network_interface_id = aws_network_interface.blue_mongo_nic.id
+    network_interface_id = aws_network_interface.blue_two_nic.id
     device_index         = 0
   }
 
   tags = {
-    "Name" = "Blue Mongo"
+    "Name" = "Blue Two"
+  }
+}
+
+resource "aws_network_interface" "blue_three_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.30"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_three"
+  }
+}
+
+resource "aws_instance" "blue_three" {
+  ami               = data.aws_ami.ubuntu.id
+  instance_type     = "t2.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_three_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Three"
+  }
+}
+
+resource "aws_network_interface" "blue_four_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.40"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_four"
+  }
+}
+
+resource "aws_instance" "blue_four" {
+  ami               = data.aws_ami.ubuntu.id
+  instance_type     = "t2.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_four_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Four"
+  }
+}
+
+resource "aws_network_interface" "blue_five_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.50"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_five"
+  }
+}
+
+resource "aws_instance" "blue_five" {
+  ami               = data.aws_ami.ubuntu.id
+  instance_type     = "t2.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_five_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Five"
   }
 }
