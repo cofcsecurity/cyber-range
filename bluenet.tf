@@ -170,3 +170,81 @@ resource "aws_instance" "blue_five" {
     "Name" = "Blue Five"
   }
 }
+
+resource "aws_network_interface" "blue_six_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.60"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_six"
+  }
+}
+
+resource "aws_instance" "blue_six" {
+  ami               = data.aws_ami.ubuntu.id
+  instance_type     = "t2.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_six_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Six"
+  }
+}
+
+resource "aws_network_interface" "blue_seven_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.70"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_seven"
+  }
+}
+
+resource "aws_instance" "blue_seven" {
+  ami               = data.aws_ami.ubuntu.id
+  instance_type     = "t2.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_seven_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Seven"
+  }
+}
+
+resource "aws_network_interface" "blue_eight_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.80"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_eight"
+  }
+}
+
+resource "aws_instance" "blue_eight" {
+  ami               = data.aws_ami.ubuntu.id
+  instance_type     = "t2.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_eight_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Eight"
+  }
+}
