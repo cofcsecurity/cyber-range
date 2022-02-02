@@ -41,6 +41,49 @@ resource "aws_network_acl" "blue_subnet_acl" {
   }
 }
 
+// pfsense
+resource "aws_network_interface" "bastion_pfsense_nic" {
+  subnet_id       = aws_subnet.bastion_subnet.id
+  private_ips     = ["10.0.0.42"]
+  security_groups = [aws_security_group.range_default_sg.id]
+  source_dest_check = false
+
+  tags = {
+    Name = "range_bastion_pfsense"
+  }
+}
+
+resource "aws_network_interface" "blue_pfsense_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.42"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_pfsense"
+  }
+}
+
+resource "aws_instance" "blue_pfsense" {
+  ami               = "ami-08d000e9ec10c07ec"
+  instance_type     = "t2.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.bastion_pfsense_nic.id
+    device_index         = 0
+  }
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_pfsense_nic.id
+    device_index         = 1
+  }
+
+  tags = {
+    "Name" = "Blue pfsense"
+  }
+}
+
 // Debian DNS
 resource "aws_network_interface" "blue_dns_nic" {
   subnet_id       = aws_subnet.blue_subnet.id
