@@ -37,3 +37,13 @@ data "aws_ami" "mongo" {
     values = ["blue-ubuntu-mongodb"]
   }
 }
+
+data "aws_ami" "samba" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "name"
+    values = ["blue-redhat-samba"]
+  }
+}
