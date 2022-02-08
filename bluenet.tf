@@ -121,3 +121,30 @@ resource "aws_instance" "blue_mongo" {
     "Name" = "Blue Mongo"
   }
 }
+
+// Ubuntu Jenkins
+resource "aws_network_interface" "blue_jenkins_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.30"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_jenkins"
+  }
+}
+
+resource "aws_instance" "blue_jenkins" {
+  ami               = data.aws_ami.jenkins.id
+  instance_type     = "t2.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_jenkins_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Jenkins"
+  }
+}

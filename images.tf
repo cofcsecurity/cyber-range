@@ -37,3 +37,13 @@ data "aws_ami" "mongo" {
     values = ["blue-ubuntu-mongodb"]
   }
 }
+
+data "aws_ami" "jenkins" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "name"
+    values = ["blue-ubuntu-jenkins"]
+  }
+}
