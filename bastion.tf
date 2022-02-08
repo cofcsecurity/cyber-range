@@ -53,7 +53,7 @@ resource "aws_network_acl" "bastion_subnet_acl" {
 
 resource "aws_instance" "bastion" {
   ami               = "ami-04505e74c0741db8d"
-  instance_type     = "t2.micro"
+  instance_type     = "t2.medium"
   availability_zone = var.aws_availability_zone
   security_groups   = [aws_security_group.range_default_sg.id]
   subnet_id         = aws_subnet.bastion_subnet.id
