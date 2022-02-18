@@ -52,7 +52,7 @@ resource "aws_network_acl" "bastion_subnet_acl" {
 }
 
 resource "aws_instance" "bastion" {
-  ami               = data.aws_ami.ubuntu.id
+  ami               = "ami-04505e74c0741db8d"
   instance_type     = "t2.micro"
   availability_zone = var.aws_availability_zone
   security_groups   = [aws_security_group.range_default_sg.id]
