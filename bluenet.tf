@@ -41,7 +41,6 @@ resource "aws_network_acl" "blue_subnet_acl" {
   }
 }
 
-// Ubuntu Workstation
 resource "aws_network_interface" "bluehost_nic" {
   subnet_id       = aws_subnet.blue_subnet.id
   private_ips     = ["10.0.10.20"]
@@ -53,7 +52,7 @@ resource "aws_network_interface" "bluehost_nic" {
 }
 
 resource "aws_instance" "bluehost" {
-  ami               = data.aws_ami.ubuntu.id
+  ami               = data.aws_ami.practice.id
   instance_type     = "t2.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name

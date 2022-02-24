@@ -8,6 +8,16 @@ data "aws_ami" "ubuntu" {
   }
 }
 
+data "aws_ami" "practice" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "name"
+    values = ["blue-ubuntu-practice"]
+  }
+}
+
 data "aws_ami" "kali" {
   most_recent = true
   owners      = ["self"]
