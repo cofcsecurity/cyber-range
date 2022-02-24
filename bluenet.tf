@@ -66,3 +66,30 @@ resource "aws_instance" "bluehost" {
     "Name" = "Blue Workstation"
   }
 }
+
+resource "aws_network_interface" "blue_seven_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.70"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_seven"
+  }
+}
+
+resource "aws_instance" "blue_seven" {
+  ami               = "ami-061ea6bea7ce5dd31" // Windows Server 2016
+  instance_type     = "t2.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+  user_data = "<powershell>\nnet user Administrator range-replace-me\nwmic useraccount where \"name='Administrator'\" set PasswordExpires=FALSE\n</powershell>"
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_seven_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue7 - Windows"
+  }
+}
