@@ -53,7 +53,7 @@ resource "aws_network_interface" "blue_one_nic" {
 
 resource "aws_instance" "blue_one" {
   ami               = data.aws_ami.practice.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -79,7 +79,7 @@ resource "aws_network_interface" "blue_two_nic" {
 
 resource "aws_instance" "blue_two" {
   ami               = data.aws_ami.practice.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -105,7 +105,7 @@ resource "aws_network_interface" "blue_three_nic" {
 
 resource "aws_instance" "blue_three" {
   ami               = data.aws_ami.practice.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -131,7 +131,7 @@ resource "aws_network_interface" "blue_four_nic" {
 
 resource "aws_instance" "blue_four" {
   ami               = data.aws_ami.practice.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -157,7 +157,7 @@ resource "aws_network_interface" "blue_five_nic" {
 
 resource "aws_instance" "blue_five" {
   ami               = data.aws_ami.practice.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -183,7 +183,7 @@ resource "aws_network_interface" "blue_six_nic" {
 
 resource "aws_instance" "blue_six" {
   ami               = data.aws_ami.practice.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -209,7 +209,7 @@ resource "aws_network_interface" "blue_seven_nic" {
 
 resource "aws_instance" "blue_seven" {
   ami               = data.aws_ami.practice.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -235,7 +235,7 @@ resource "aws_network_interface" "blue_eight_nic" {
 
 resource "aws_instance" "blue_eight" {
   ami               = data.aws_ami.practice.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
