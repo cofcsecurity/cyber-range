@@ -54,7 +54,7 @@ resource "aws_network_interface" "blue_dns_nic" {
 
 resource "aws_instance" "blue_dns" {
   ami               = data.aws_ami.dns.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -81,7 +81,7 @@ resource "aws_network_interface" "bluehost_nic" {
 
 resource "aws_instance" "bluehost" {
   ami               = data.aws_ami.ubuntu.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -108,7 +108,7 @@ resource "aws_network_interface" "blue_mongo_nic" {
 
 resource "aws_instance" "blue_mongo" {
   ami               = data.aws_ami.mongo.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -135,7 +135,7 @@ resource "aws_network_interface" "blue_jenkins_nic" {
 
 resource "aws_instance" "blue_jenkins" {
   ami               = data.aws_ami.jenkins.id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
