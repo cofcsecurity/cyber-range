@@ -47,3 +47,14 @@ data "aws_ami" "jenkins" {
     values = ["blue-ubuntu-jenkins"]
   }
 }
+
+
+data "aws_ami" "windows" {
+  most_recent = true
+  owners = [ "self" ]
+
+  filter {
+    name = "name"
+    values = ["blue-windows2022"]
+  }
+}
