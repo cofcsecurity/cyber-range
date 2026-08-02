@@ -3,10 +3,15 @@
 Tracking items from the 2026-08-02 feasibility review. See that review for full rationale on sequencing and dependencies.
 
 ## Now
-- [ ] Remote state backend (S3 + DynamoDB lock) — destroy workflow currently can't retrieve its own state artifact
-- [ ] Bump Terraform (`>= 0.14.9`) and AWS provider (`~> 3.63.0`) pins
-- [ ] Fix `blue_ubuntu_mail` — provisioned from the mongo AMI instead of the unused `ubuntu-email` AMI
-- [ ] Clean up leftover/duplicate `blue_mongo_*` instances in `bluenet.tf`
+- [ ] Remote state backend (S3 + DynamoDB lock) — destroy workflow currently can't retrieve its own state artifact.
+      **Blocked on human input**: needs a real S3 bucket + DynamoDB table (bucket name, region, who owns it), plus
+      updating `terraform-check.yaml` to `init -backend=false` so the check job keeps working without AWS creds.
+      Not something to provision unattended.
+- [x] Bump Terraform (`>= 0.14.9`) and AWS provider (`~> 3.63.0`) pins — bumped to `>= 1.5.0` / `~> 3.76.0`
+      (latest 3.x). Jump to provider 4.x/5.x/6.x deliberately deferred — those carry breaking schema changes
+      (e.g. `aws_eip.vpc` → `domain`) that need a real `terraform plan` against live state to validate safely.
+- [x] Fix `blue_ubuntu_mail` — now provisioned from `ubuntu-email` AMI instead of `mongo`
+- [x] Clean up leftover/duplicate `blue_mongo_*` instances in `bluenet.tf` — removed 5 unused hosts
 
 ## Detection
 - [ ] Wazuh agents fleet-wide (no traffic mirroring required)
