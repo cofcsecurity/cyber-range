@@ -1,3 +1,8 @@
+# Notes: PLEASE DO NOT CHANGE IP ADDRESSES AS THIS WILL BREAK SERVICES 
+  # Most services are preconfigured with the ip addresses already so if you change the webserver
+  # or database IP's it will break things.  
+
+
 resource "aws_subnet" "blue_subnet" {
   vpc_id            = aws_vpc.range.id
   cidr_block        = "10.0.10.0/24"
@@ -41,6 +46,9 @@ resource "aws_network_acl" "blue_subnet_acl" {
   }
 }
 
+
+// start of images primary CORE images
+
 // Debian DNS
 resource "aws_network_interface" "blue_dns_nic" {
   subnet_id       = aws_subnet.blue_subnet.id
@@ -68,37 +76,263 @@ resource "aws_instance" "blue_dns" {
   }
 }
 
-// Ubuntu Workstation
-resource "aws_network_interface" "bluehost_nic" {
+// Ubuntu WebServer
+resource "aws_network_interface" "blue_web_nic" {
   subnet_id       = aws_subnet.blue_subnet.id
-  private_ips     = ["10.0.10.20"]
+  private_ips     = ["10.0.10.10"]
   security_groups = [aws_security_group.range_default_sg.id]
 
   tags = {
-    Name = "range_bluehost"
+    Name = "range_blue_web"
   }
 }
 
-resource "aws_instance" "bluehost" {
-  ami               = data.aws_ami.ubuntu.id
+resource "aws_instance" "blue_web" {
+  ami               = data.aws_ami.ubuntu-django.id
   instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
   network_interface {
-    network_interface_id = aws_network_interface.bluehost_nic.id
+    network_interface_id = aws_network_interface.blue_web_nic.id
     device_index         = 0
   }
 
   tags = {
-    "Name" = "Blue Workstation"
+    "Name" = "Blue Webserver"
   }
 }
 
+// CentOS Database
+resource "aws_network_interface" "blue_CODB_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.20"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_codb"
+  }
+}
+
+resource "aws_instance" "blue_CODB" {
+  ami               = data.aws_ami.centos-db.id
+  instance_type     = "t3.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_CODB_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue CentOS DB"
+  }
+}
+
+// CentOS Samba Fileshare
+resource "aws_network_interface" "blue_COS_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.30"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_cos"
+  }
+}
+
+resource "aws_instance" "blue_centos_samba" {
+  ami               = data.aws_ami.centos-samba.id
+  instance_type     = "t3.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_COS_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue CentOS Samba"
+  }
+}
+
+
+// Windows Active Directory
+resource "aws_network_interface" "blue_win_ad_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.60"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_win_ad"
+  }
+  
+}
+
+resource "aws_instance" "blue_windows_ad" {
+  ami = data.aws_ami.windows-ad.id
+  instance_type = "t3.medium"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_win_ad_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Windows AD"
+  }
+}
+
+resource "aws_network_interface" "blue_win_db_nic"{
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.50"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_windows-1"
+  }
+  
+}
+
+resource "aws_instance" "blue_windows_db" {
+  ami = data.aws_ami.windows-db.id
+  instance_type = "t3.small"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_win_db_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Windows DB"
+  }
+}
+
+// Ubuntu Mail Server
+resource "aws_network_interface" "blue_mail_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.40"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_mail"
+  }
+}
+
+resource "aws_instance" "blue_ubuntu_mail" {
+  ami               = data.aws_ami.mongo.id
+  instance_type     = "t3.small"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_mail_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Ubuntu Mail"
+  }
+}
+
+// empty DB server
+resource "aws_network_interface" "blue_ubuntu_nic" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.80"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_ubuntu"
+  }
+}
+
+resource "aws_instance" "blue_ubuntu" {
+  ami               = data.aws_ami.mongo.id
+  instance_type     = "t3.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_ubuntu_nic.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Ubuntu"
+  }
+}
+
+
+// shadow team memeber machines are listed below. More can be added as needed
+
+resource "aws_network_interface" "ws1"{
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.15"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_windows-1"
+  }
+  
+}
+
+resource "aws_instance" "windows-server-1" {
+  ami = data.aws_ami.windows-db.id
+  instance_type = "t3.small"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.ws1.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Windows 1"
+  }
+  
+}
+
+
+resource "aws_network_interface" "ws2" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.25"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_windows-1"
+  }
+  
+}
+
+resource "aws_instance" "windows-server-2" {
+  ami = data.aws_ami.windows-db.id
+  instance_type = "t3.small"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.ws2.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Windows 2"
+  }
+  
+}
+
+
+// uncomment all this to run Linux
 // Ubuntu MongoDB
 resource "aws_network_interface" "blue_mongo_nic" {
   subnet_id       = aws_subnet.blue_subnet.id
-  private_ips     = ["10.0.10.10"]
+  private_ips     = ["10.0.10.110"]
   security_groups = [aws_security_group.range_default_sg.id]
 
   tags = {
@@ -118,33 +352,115 @@ resource "aws_instance" "blue_mongo" {
   }
 
   tags = {
-    "Name" = "Blue Mongo"
+    "Name" = "Blue Mongo_1"
   }
 }
 
-// Ubuntu Jenkins
-resource "aws_network_interface" "blue_jenkins_nic" {
+// Ubuntu MongoDB 2
+resource "aws_network_interface" "blue_mongo_nic_10" {
   subnet_id       = aws_subnet.blue_subnet.id
-  private_ips     = ["10.0.10.30"]
+  private_ips     = ["10.0.10.120"]
   security_groups = [aws_security_group.range_default_sg.id]
 
   tags = {
-    Name = "range_blue_jenkins"
+    Name = "range_blue_mongo"
   }
 }
 
-resource "aws_instance" "blue_jenkins" {
-  ami               = data.aws_ami.jenkins.id
+resource "aws_instance" "blue_mongo_10" {
+  ami               = data.aws_ami.mongo.id
   instance_type     = "t3.micro"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
   network_interface {
-    network_interface_id = aws_network_interface.blue_jenkins_nic.id
+    network_interface_id = aws_network_interface.blue_mongo_nic_10.id
     device_index         = 0
   }
 
   tags = {
-    "Name" = "Blue Jenkins"
+    "Name" = "Blue Mongo_2"
   }
 }
+
+// Ubuntu MongoDB 2
+resource "aws_network_interface" "blue_mongo_nic_11" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.130"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_mongo"
+  }
+}
+
+resource "aws_instance" "blue_mongo_11" {
+  ami               = data.aws_ami.mongo.id
+  instance_type     = "t3.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_mongo_nic_11.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Mongo_3"
+  }
+}
+
+// Ubuntu MongoDB 2
+resource "aws_network_interface" "blue_mongo_nic_12" {
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.140"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_mongo"
+  }
+}
+
+resource "aws_instance" "blue_mongo_12" {
+  ami               = data.aws_ami.mongo.id
+  instance_type     = "t3.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_mongo_nic_12.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Mongo_4"
+  }
+}
+
+// Ubuntu MongoDB 2
+resource "aws_network_interface" "blue_mongo_nic_13"{
+  subnet_id       = aws_subnet.blue_subnet.id
+  private_ips     = ["10.0.10.150"]
+  security_groups = [aws_security_group.range_default_sg.id]
+
+  tags = {
+    Name = "range_blue_mongo"
+  }
+}
+
+resource "aws_instance" "blue_mongo_13" {
+  ami               = data.aws_ami.mongo.id
+  instance_type     = "t3.micro"
+  availability_zone = var.aws_availability_zone
+  key_name          = aws_key_pair.range_ssh_public_key.key_name
+
+  network_interface {
+    network_interface_id = aws_network_interface.blue_mongo_nic_13.id
+    device_index         = 0
+  }
+
+  tags = {
+    "Name" = "Blue Mongo_5"
+  }
+}
+
