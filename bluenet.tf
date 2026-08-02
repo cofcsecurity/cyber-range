@@ -1,6 +1,6 @@
 # Notes: PLEASE DO NOT CHANGE IP ADDRESSES AS THIS WILL BREAK SERVICES 
-  # Most services are preconfigured with the ip addresses already so if you change the webserver
-  # or database IP's it will break things.  
+# Most services are preconfigured with the ip addresses already so if you change the webserver
+# or database IP's it will break things.  
 
 
 resource "aws_subnet" "blue_subnet" {
@@ -167,12 +167,12 @@ resource "aws_network_interface" "blue_win_ad_nic" {
   tags = {
     Name = "range_blue_win_ad"
   }
-  
+
 }
 
 resource "aws_instance" "blue_windows_ad" {
-  ami = data.aws_ami.windows-ad.id
-  instance_type = "t3.medium"
+  ami               = data.aws_ami.windows-ad.id
+  instance_type     = "t3.medium"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -186,7 +186,7 @@ resource "aws_instance" "blue_windows_ad" {
   }
 }
 
-resource "aws_network_interface" "blue_win_db_nic"{
+resource "aws_network_interface" "blue_win_db_nic" {
   subnet_id       = aws_subnet.blue_subnet.id
   private_ips     = ["10.0.10.50"]
   security_groups = [aws_security_group.range_default_sg.id]
@@ -194,12 +194,12 @@ resource "aws_network_interface" "blue_win_db_nic"{
   tags = {
     Name = "range_blue_windows-1"
   }
-  
+
 }
 
 resource "aws_instance" "blue_windows_db" {
-  ami = data.aws_ami.windows-db.id
-  instance_type = "t3.small"
+  ami               = data.aws_ami.windows-db.id
+  instance_type     = "t3.small"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -270,7 +270,7 @@ resource "aws_instance" "blue_ubuntu" {
 
 // shadow team memeber machines are listed below. More can be added as needed
 
-resource "aws_network_interface" "ws1"{
+resource "aws_network_interface" "ws1" {
   subnet_id       = aws_subnet.blue_subnet.id
   private_ips     = ["10.0.10.15"]
   security_groups = [aws_security_group.range_default_sg.id]
@@ -278,12 +278,12 @@ resource "aws_network_interface" "ws1"{
   tags = {
     Name = "range_blue_windows-1"
   }
-  
+
 }
 
 resource "aws_instance" "windows-server-1" {
-  ami = data.aws_ami.windows-db.id
-  instance_type = "t3.small"
+  ami               = data.aws_ami.windows-db.id
+  instance_type     = "t3.small"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -295,7 +295,7 @@ resource "aws_instance" "windows-server-1" {
   tags = {
     "Name" = "Blue Windows 1"
   }
-  
+
 }
 
 
@@ -307,12 +307,12 @@ resource "aws_network_interface" "ws2" {
   tags = {
     Name = "range_blue_windows-1"
   }
-  
+
 }
 
 resource "aws_instance" "windows-server-2" {
-  ami = data.aws_ami.windows-db.id
-  instance_type = "t3.small"
+  ami               = data.aws_ami.windows-db.id
+  instance_type     = "t3.small"
   availability_zone = var.aws_availability_zone
   key_name          = aws_key_pair.range_ssh_public_key.key_name
 
@@ -324,7 +324,7 @@ resource "aws_instance" "windows-server-2" {
   tags = {
     "Name" = "Blue Windows 2"
   }
-  
+
 }
 
 
@@ -438,7 +438,7 @@ resource "aws_instance" "blue_mongo_12" {
 }
 
 // Ubuntu MongoDB 2
-resource "aws_network_interface" "blue_mongo_nic_13"{
+resource "aws_network_interface" "blue_mongo_nic_13" {
   subnet_id       = aws_subnet.blue_subnet.id
   private_ips     = ["10.0.10.150"]
   security_groups = [aws_security_group.range_default_sg.id]
