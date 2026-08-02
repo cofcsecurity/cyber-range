@@ -118,3 +118,17 @@ data "aws_ami" "ubuntu-email" {
     values = ["blue-ubuntu-email"]
   }
 }
+
+// Security Onion isn't installed via package manager like the other boxes -
+// it ships as its own OS installer/appliance. This AMI needs to be built the
+// same way the other custom images here were (install + snapshot, or an
+// EC2 Image Builder pipeline), following Security Onion's own install docs.
+data "aws_ami" "security-onion" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "name"
+    values = ["range-security-onion"]
+  }
+}
