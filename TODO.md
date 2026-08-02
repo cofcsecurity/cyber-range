@@ -14,8 +14,12 @@ Tracking items from the 2026-08-02 feasibility review. See that review for full 
 - [x] Clean up leftover/duplicate `blue_mongo_*` instances in `bluenet.tf` — removed 5 unused hosts
 
 ## Detection
-- [ ] Wazuh agents fleet-wide (no traffic mirroring required)
-- [ ] Security Onion box + VPC Traffic Mirroring sessions (not a passive second NIC — AWS needs mirroring configured per source ENI)
+- [ ] Wazuh agents fleet-wide — on hold: no cloud-init/Ansible layer exists yet to get an agent onto hosts without
+      one-off boot scripts I can't verify against real AWS. Revisit alongside scenario tooling below.
+- [ ] Security Onion box + VPC Traffic Mirroring sessions — **in review**, [feature/security-onion](https://github.com/cofcsecurity/cyber-range/pull/new/feature/security-onion).
+      Adds the host, monitor NIC, and a mirror session per existing blue_subnet host. Needs: a `range-security-onion`
+      AMI built (Security Onion installs as its own appliance, not a package), sizing verified under real load, and
+      a real `terraform plan`/`apply` since I have no AWS credentials to test this against live infra.
 
 ## Scoring & spectator
 - [ ] New isolated white/scoring subnet
